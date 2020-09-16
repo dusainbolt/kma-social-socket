@@ -12,11 +12,17 @@ const server = express()
 
 const io = socketIO(server);
 
-let clients = {}
+let clients = {};
+let userOnline = [];
 io.on('connection', (socket) => {
   clients[socket.id] = socket;
-
   console.log('----------------->Client connected ' + socket.id);
+
+  io.on('__speakerUserId', (userId)=> {
+    console.log('----------------->userId: ' + socket.id);
+    userOnline.push(userId);
+    io.emit('__listOnline', userOnline);
+  });
   socket.on('disconnect', () =>{
     console.log('----------------->DISCONNECT--------------------<');
     delete clients[socket.id];
