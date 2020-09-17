@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
   socket.on(CHANNEL.LOG_OUT, (socketId)=> {
     console.log('----------------->logoutSocket: ' + socketId);
     removeSocket(socketId);
+    io.emit(CHANNEL.LIST_ONLINE, userOnline);
   });
 
   socket.on('disconnect', () =>{
