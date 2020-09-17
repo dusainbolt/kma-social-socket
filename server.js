@@ -1,5 +1,4 @@
 'use strict';
-import { CHANEL } from "./channel";
 const express = require('express');
 const socketIO = require('socket.io');
 
@@ -14,18 +13,25 @@ const io = socketIO(server);
 
 let clients = {};
 let userOnline = {};
+
+const CHANNEL = {
+  LOG_OUT: "__logout",
+  SPEAK_USER_ID: "__speakerUserId",
+  LIST_ONLINE: "__listOnline",
+};
+
 io.on('connection', (socket) => {
   clients[socket.id] = socket;
   console.log('----------------->Client connected ' + socket.id);
 
-  socket.on(CHANEL.SPEAK_USER_ID, (userId)=> {
+  socket.on(CHANNEL.SPEAK_USER_ID, (userId)=> {
     console.log('----------------->userOnline: ' + userId);
     userOnline[socket.id] = userId;
     console.log('----------------->sendListOnline: ' + userId);
-    io.emit(CHANEL.LIST_ONLINE, userOnline);
+    io.emit(CHANNEL.LIST_ONLINE, userOnline);
   });
 
-  socket.on(CHANEL.LOG_OUT, (socketId)=> {
+  socket.on(CHANNEL.LOG_OUT, (socketId)=> {
     console.log('----------------->logoutSocket: ' + socketId);
     removeSocket(socketId);
   });
@@ -33,7 +39,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () =>{
     console.log('----------------->DISCONNECT--------------------<');
     removeSocket(socket.id);
-    io.emit(CHANEL.LIST_ONLINE, userOnline);
+    io.emit(CHANNEL.LIST_ONLINE, userOnline);
   })
 });
 
