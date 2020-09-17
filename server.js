@@ -1,5 +1,5 @@
 'use strict';
-
+import { CHANEL } from "./channel";
 const express = require('express');
 const socketIO = require('socket.io');
 
@@ -18,19 +18,29 @@ io.on('connection', (socket) => {
   clients[socket.id] = socket;
   console.log('----------------->Client connected ' + socket.id);
 
-  socket.on('__speakerUserId', (userId)=> {
+  socket.on(CHANEL.SPEAK_USER_ID, (userId)=> {
     console.log('----------------->userOnline: ' + userId);
     userOnline[socket.id] = userId;
     console.log('----------------->sendListOnline: ' + userId);
-    io.emit('__listOnline', userOnline);
+    io.emit(CHANEL.LIST_ONLINE, userOnline);
   });
+
+  socket.on(CHANEL.LOG_OUT, (socketId)=> {
+    console.log('----------------->logoutSocket: ' + socketId);
+    removeSocket(socketId);
+  });
+
   socket.on('disconnect', () =>{
     console.log('----------------->DISCONNECT--------------------<');
-    delete clients[socket.id];
-    delete userOnline[socket.id];
-    io.emit('__listOnline', userOnline);
+    removeSocket(socket.id);
+    io.emit(CHANEL.LIST_ONLINE, userOnline);
   })
 });
+
+function removeSocket(socketId){
+  delete clients[socketId];
+  delete userOnline[socketId];
+}
 
 var Redis = require('ioredis');
 var redis = new Redis("redis://h:paa9428c6abacdb375edd4d34a5659b67bc59ceba0466c6c3bf442e54a21dfad3@ec2-52-2-204-37.compute-1.amazonaws.com:27239");
