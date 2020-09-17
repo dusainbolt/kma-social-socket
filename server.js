@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
     console.log('----------------->userOnline: ' + userId);
     userOnline[socket.id] = userId;
     console.log('----------------->sendListOnline: ' + userId);
-    socket.emit('__listOnline', userOnline);
+    io.emit('__listOnline', userOnline);
   });
   socket.on('disconnect', () =>{
     console.log('----------------->DISCONNECT--------------------<');
