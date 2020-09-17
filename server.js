@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
   socket.on(CHANNEL.SPEAK_USER_ID, (userId)=> {
     console.log('----------------->userOnline: ' + userId);
     userOnline[socket.id] = userId;
-    console.log('----------------->sendListOnline: ' + userId);
+    console.log('----------------->sendListOnline: ' + userOnline);
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
   });
 
