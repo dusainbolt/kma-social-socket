@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
     console.log('----------------->DISCONNECT--------------------<');
     delete clients[socket.id];
     delete userOnline[socket.id];
+    io.emit('__listOnline', userOnline);
   })
 });
 
