@@ -18,6 +18,8 @@ const CHANNEL = {
   LOG_OUT: "__logout",
   SPEAK_USER_ID: "__speakerUserId",
   LIST_ONLINE: "__listOnline",
+  RECEIVE_TYPING_CHAT: "__sendTypingChat",
+  SEND_TYPING_CHAT: "__typingChatRoom:id=",
 };
 
 io.on('connection', (socket) => {
@@ -31,6 +33,12 @@ io.on('connection', (socket) => {
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
   });
 
+  socket.on(CHANNEL.RECEIVE_TYPING_CHAT, (roomChat)=> {
+    console.log('----------------->roomTypingChat: ' + roomChat);
+    io.emit(`${CHANNEL.SEND_TYPING_CHAT}${roomChat.roomId}`, roomChat);
+  });
+
+  ////////AUTH SOCKET
   socket.on(CHANNEL.LOG_OUT, (socketId)=> {
     console.log('----------------->logoutSocket: ' + socketId);
     removeSocket(socketId);
