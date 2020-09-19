@@ -83,12 +83,8 @@ redis.on("pmessage", function(parther, channel, message){
 });
 
 function handleChannelRedis(channel, data){
-  switch (channel) {
-    case CHANNEL.ROOM_CHAT:
-      // io.emit(`${channel}`, data);
-      console.log(channel);
-    default:
-      return;
+  if(channel.indexOf(CHANNEL.ROOM_CHAT) !== -1){
+    console.log("-------------> HANDLE REDIS-> ", channel);
   }
 };
 
