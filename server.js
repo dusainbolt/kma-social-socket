@@ -21,6 +21,7 @@ const CHANNEL = {
   RECEIVE_TYPING_CHAT: "__sendTypingChat",
   SEND_TYPING_CHAT: "__typingChatRoom:id=",
   ROOM_CHAT: "__roomChat:id=",
+  MY_INBOX: "__myInbox:id=",
 };
 
 
@@ -84,7 +85,8 @@ redis.on("pmessage", function(parther, channel, message){
 
 function handleChannelRedis(channel, payload){
   if(channel.indexOf(CHANNEL.ROOM_CHAT) !== -1){
-    console.log("-------------> HANDLE REDIS-> userInbox", payload.data.idUserInbox);
+    io.emit(`${CHANNEL.MY_INBOX}${payload.data.idUserInbox}`, payload.data);
+    console.log("-------------> HANDLE REDIS-> userInbox", payload.data);
   }
 };
 
