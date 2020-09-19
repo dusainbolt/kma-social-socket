@@ -82,9 +82,9 @@ redis.on("pmessage", function(parther, channel, message){
   console.log("------>>>>>>>>>>>>>>SEND SOCKET SUCCESS<<<<<<<<<<<<<<---------");
 });
 
-function handleChannelRedis(channel, data){
+function handleChannelRedis(channel, payload){
   if(channel.indexOf(CHANNEL.ROOM_CHAT) !== -1){
-    console.log("-------------> HANDLE REDIS-> ", channel);
+    console.log("-------------> HANDLE REDIS-> userInbox", payload.data.idUserInbox);
   }
 };
 
