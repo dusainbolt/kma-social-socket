@@ -50,12 +50,14 @@ io.on('connection', (socket) => {
     removeSocket(socket.id);
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
   })
+  baseSocket();
 });
 
 function removeSocket(socketId){
   delete clients[socketId];
   delete userOnline[socketId];
 }
+
 
 var Redis = require('ioredis');
 var redis = new Redis("redis://h:paa9428c6abacdb375edd4d34a5659b67bc59ceba0466c6c3bf442e54a21dfad3@ec2-52-2-204-37.compute-1.amazonaws.com:27239");
@@ -74,3 +76,46 @@ redis.on("pmessage", function(parther, channel, message){
   io.emit(`_${chanelName}`, payload);
   console.log("------>>>>>>>>>>>>>>SEND SOCKET SUCCESS<<<<<<<<<<<<<<---------");
 });
+
+function baseSocket() {
+  socket.on("error", error => {
+    // ...
+  });
+  socket.on("disconnecting", reason => {
+    let rooms = Object.keys(socket.rooms);
+    // ...
+  });
+  socket.on("error", error => {
+    // ...
+  });
+  socket.on("disconnect", reason => {
+    console.log("----------------_DISCONNECT", reason);
+    if (reason === "io server disconnect") {
+      // the disconnection was initiated by the server, you need to reconnect manually
+      socket.connect();
+    }
+    // else the socket will automatically try to reconnect
+  });
+  socket.on("reconnect", attemptNumber => {
+    console.log("----------------reconnect", attemptNumber);
+    // ...
+  });
+  socket.on("reconnecting", attemptNumber => {
+    console.log("----------------reconnecting", attemptNumber);
+  });
+  socket.on("reconnect_error", error => {
+    console.log("----------------reconnect_error", error);
+  });
+  socket.on("reconnect_failed", () => {
+    console.log("----------------reconnect_fail");
+  });
+  socket.on("connect_error", error => {
+    console.log("----------------connect_error", error);
+  });
+  socket.on("connect_timeout", timeout => {
+    console.log("----------------time_out", timeout);
+  });
+  socket.on("error", error => {
+    console.log("----------------error", error);
+  });
+}
