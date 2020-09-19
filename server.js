@@ -85,7 +85,7 @@ redis.on("pmessage", function(parther, channel, message){
 
 function handleChannelRedis(channel, payload){
   if(channel.indexOf(CHANNEL.ROOM_CHAT) !== -1){
-    io.emit(`${CHANNEL.MY_INBOX}${payload.data.userInbox.userId}`, payload.data);
+    io.emit(`${CHANNEL.MY_INBOX}${payload.data.idUserInbox}`, payload.data);
     console.log("-------------> HANDLE REDIS-> userInbox", payload.data);
   }
 };
