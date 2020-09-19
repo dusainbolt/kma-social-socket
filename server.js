@@ -22,6 +22,8 @@ const CHANNEL = {
   SEND_TYPING_CHAT: "__typingChatRoom:id=",
   ROOM_CHAT: "__roomChat:id=",
   MY_INBOX: "__myInbox:id=",
+  OPEN_MY_BOX_CHAT: "__openBoxChat",
+  RECEIVE_BOX_CHAT: "__receiveBoxChat:id=",
 };
 
 
@@ -40,6 +42,11 @@ io.on('connection', (socket) => {
   socket.on(CHANNEL.RECEIVE_TYPING_CHAT, (roomChat)=> {
     console.log('----------------->roomTypingChat: ' + roomChat);
     io.emit(`${CHANNEL.SEND_TYPING_CHAT}${roomChat.roomId}`, roomChat);
+  });
+
+  socket.on(CHANNEL.OPEN_MY_BOX_CHAT, (userInbox, userId)=> {
+    console.log('----------------->openBoxChat: ' + userInbox, userId);
+    io.emit(`${CHANNEL.RECEIVE_BOX_CHAT}${userId}`, userInbox);
   });
 
   ////////AUTH SOCKET
