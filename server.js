@@ -20,6 +20,7 @@ const CHANNEL = {
   LIST_ONLINE: "__listOnline",
   RECEIVE_TYPING_CHAT: "__sendTypingChat",
   SEND_TYPING_CHAT: "__typingChatRoom:id=",
+  ROOM_CHAT: "__roomChat:id=",
 };
 
 
@@ -76,9 +77,20 @@ redis.on("pmessage", function(parther, channel, message){
   // get channel api backend
   console.log("--------------->Channel: ", chanelName);
   console.log("--------------->Message",  message);
-  io.emit(`_${chanelName}`, payload);
+  io.emit(`${chanelName}`, payload);
+  handleChannelRedis(chanelName, payload);
   console.log("------>>>>>>>>>>>>>>SEND SOCKET SUCCESS<<<<<<<<<<<<<<---------");
 });
+
+function handleChannelRedis(channel, data){
+  switch (channel) {
+    case CHANNEL.ROOM_CHAT:
+      // io.emit(`${channel}`, data);
+      console.log(channel);
+    default:
+      return;
+  }
+};
 
 function baseSocket(socket) {
   socket.on("reconnect", attemptNumber => {
