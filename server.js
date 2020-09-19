@@ -13,6 +13,7 @@ const io = socketIO(server);
 
 let clients = {};
 let userOnline = {};
+let interval;
 
 const CHANNEL = {
   LOG_OUT: "__logout",
@@ -22,10 +23,18 @@ const CHANNEL = {
   SEND_TYPING_CHAT: "__typingChatRoom:id=",
 };
 
+
 io.on('connection', (socket) => {
   clients[socket.id] = socket;
   console.log('----------------->Client connected ' + socket.id);
+  if (interval) {
+    clearInterval(interval);
+  }
+  interval = setInterval(() => handleSocketApp(socket), 1000);
+  baseSocket(socket);
+});
 
+function handleSocketApp(socket){
   socket.on(CHANNEL.SPEAK_USER_ID, (userId)=> {
     console.log('----------------->userOnline: ' + userId);
     userOnline[socket.id] = userId;
@@ -49,9 +58,9 @@ io.on('connection', (socket) => {
     console.log("----------------_DISCONNECT", reason);
     removeSocket(socket.id);
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
+    clearInterval(interval);
   })
-  baseSocket(socket);
-});
+}
 
 function removeSocket(socketId){
   delete clients[socketId];
