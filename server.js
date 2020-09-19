@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
 
   socket.on(CHANNEL.ON_READ_ROOM, (userId, roomId)=> {
     console.log('----------------->onReadRoom: ', roomId);
-    io.emit(`${CHANNEL.RECEIVE_READ_ROOM}${roomId}`, userId );
+    io.emit(`__receiveReadRoom:id=${roomId}`, userId);
   });
 
 
