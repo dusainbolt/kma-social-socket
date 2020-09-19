@@ -45,12 +45,12 @@ io.on('connection', (socket) => {
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
   });
 
-  socket.on('disconnect', () =>{
-    console.log('----------------->DISCONNECT--------------------<');
+  socket.on('disconnect', (reason) =>{
+    console.log("----------------_DISCONNECT", reason);
     removeSocket(socket.id);
     io.emit(CHANNEL.LIST_ONLINE, userOnline);
   })
-  baseSocket();
+  baseSocket(socket);
 });
 
 function removeSocket(socketId){
@@ -77,25 +77,7 @@ redis.on("pmessage", function(parther, channel, message){
   console.log("------>>>>>>>>>>>>>>SEND SOCKET SUCCESS<<<<<<<<<<<<<<---------");
 });
 
-function baseSocket() {
-  socket.on("error", error => {
-    // ...
-  });
-  socket.on("disconnecting", reason => {
-    let rooms = Object.keys(socket.rooms);
-    // ...
-  });
-  socket.on("error", error => {
-    // ...
-  });
-  socket.on("disconnect", reason => {
-    console.log("----------------_DISCONNECT", reason);
-    if (reason === "io server disconnect") {
-      // the disconnection was initiated by the server, you need to reconnect manually
-      socket.connect();
-    }
-    // else the socket will automatically try to reconnect
-  });
+function baseSocket(socket) {
   socket.on("reconnect", attemptNumber => {
     console.log("----------------reconnect", attemptNumber);
     // ...
