@@ -24,6 +24,8 @@ const CHANNEL = {
   MY_INBOX: "__myInbox:id=",
   OPEN_MY_BOX_CHAT: "__openBoxChat",
   RECEIVE_BOX_CHAT: "__receiveBoxChat:id=",
+  ON_READ_ROOM: "__onReadRoom",
+  RECEIVE_READ_ROOM:"__receiveReadRoom:id="
 };
 
 
@@ -48,6 +50,12 @@ io.on('connection', (socket) => {
     console.log('----------------->openBoxChat: ' + userInbox, userId);
     io.emit(`${CHANNEL.RECEIVE_BOX_CHAT}${userId}`, userInbox);
   });
+
+  socket.on(CHANNEL.ON_READ_ROOM, (userId, roomId)=> {
+    console.log('----------------->onReadRoom: ', userId);
+    io.emit(`${CHANNEL.RECEIVE_READ_ROOM}${roomId}`, { userId });
+  });
+
 
   ////////AUTH SOCKET
   socket.on(CHANNEL.LOG_OUT, (socketId)=> {
