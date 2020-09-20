@@ -42,7 +42,7 @@ io.on("connection", socket => {
 
   socket.on(CHANNEL.RECEIVE_TYPING_CHAT, roomChat => {
     console.log("----------------->roomTypingChat: " + roomChat.idRoomChat);
-    io.emit(`${CHANNEL.SEND_TYPING_CHAT}${roomChat.roomId}`, roomChat);
+    io.emit(`${CHANNEL.SEND_TYPING_CHAT}${roomChat.idRoomChat}`, roomChat);
   });
 
   socket.on(CHANNEL.OPEN_MY_BOX_CHAT, (userInbox, userId) => {
