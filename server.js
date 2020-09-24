@@ -77,7 +77,7 @@ function removeSocket(socketId) {
 
 var Redis = require("ioredis");
 var redis = new Redis(
-  "redis://h:paa9428c6abacdb375edd4d34a5659b67bc59ceba0466c6c3bf442e54a21dfad3@ec2-52-2-204-37.compute-1.amazonaws.com:27239"
+  "redis://h:paa9428c6abacdb375edd4d34a5659b67bc59ceba0466c6c3bf442e54a21dfad3@ec2-54-235-149-145.compute-1.amazonaws.com:30969"
 );
 // var redis = new Redis(8099);
 
